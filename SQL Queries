@@ -1,0 +1,92 @@
+1. Select the second highest salary from the employees table.
+ Answer :
+ SELECT MAX(salary) 
+ FROM employees 
+ WHERE salary < (SELECT MAX(salary) FROM employees);
+ 
+2. Find all employees who have the same job as 'John'.
+ Answer :
+ SELECT * 
+ FROM employees 
+ WHERE job_title = (SELECT job_title FROM employees WHERE name = 'John');
+
+3. Retrieve the details of employees who do not have any department assigned.
+ Answer :
+ SELECT * 
+ FROM employees 
+ WHERE department_id IS NULL;
+ 
+4. Get the names of employees whose names start with 'A'.
+ Answer :
+ SELECT * 
+ FROM employees 
+ WHERE name LIKE 'A%';
+
+5. Find the number of employees in each department.
+ Answer :
+ SELECT department_id, COUNT(*) as num_employees 
+ FROM employees 
+ GROUP BY department_id;
+ 
+6. Get the department name and the average salary of employees in each department.
+ Answer :
+ SELECT d.department_name, AVG(e.salary) as average_salary 
+ FROM employees e
+ JOIN departments d ON e.department_id = d.department_id 
+ GROUP BY d.department_name;
+ 
+7. Retrieve the employees who were hired in the last 6 months.
+ Answer :
+ SELECT * 
+ FROM employees 
+ WHERE hire_date >= DATEADD(month, -6, GETDATE());
+ 
+8. Find the total salary paid to employees in each department.
+ Answer :
+ SELECT department_id, SUM(salary) as total_salary 
+ FROM employees 
+ GROUP BY department_id;
+
+9. Get the details of employees who are managers.
+ Answer :
+ SELECT * 
+ FROM employees 
+ WHERE employee_id IN (SELECT DISTINCT manager_id FROM employees WHERE manager_id IS NOT NULL);
+ 
+10. Find the employees who have more than one manager.
+ Answer :
+ SELECT employee_id, COUNT(manager_id) as manager_count 
+ FROM employees 
+ GROUP BY employee_id 
+ HAVING COUNT(manager_id) > 1;
+ 
+11. Retrieve the top 5 highest paid employees.
+ Answer :
+ SELECT TOP 5 * 
+ FROM employees 
+ ORDER BY salary DESC;
+ 
+12. Find employees who joined in the year 2020.
+ Answer :
+ SELECT * 
+ FROM employees 
+ WHERE YEAR(hire_date) = 2020;
+ 
+13. Get the list of employees who work in the 'Sales' department.
+ Answer :
+ SELECT e.* 
+ FROM employees e 
+ JOIN departments d ON e.department_id = d.department_id 
+ WHERE d.department_name = 'Sales';
+ 
+14. List all employees along with their department names.
+ Answer :
+ SELECT e.name
+, d.department_name 
+ FROM employees e 
+ LEFT JOIN departments d ON e.department_id = d.department_id;
+ 
+15. Find the employee with the longest tenure.
+ Answer : SELECT TOP 1 * 
+ FROM employees 
+ ORDER BY hire_date ASC;
